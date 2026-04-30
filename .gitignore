@@ -1,0 +1,6 @@
+.idea/
+*.log
+config.yaml
+.env
+.env.*
+.secrets-railway.local
