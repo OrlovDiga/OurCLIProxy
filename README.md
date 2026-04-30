@@ -82,12 +82,18 @@ iFlow требует callback на 11451 — там WebUI mode работает 
 curl https://<твой-домен>.up.railway.app/v1/chat/completions \
   -H "Authorization: Bearer sk-<твой_API_KEY>" \
   -H "Content-Type: application/json" \
-  -d '{"model":"claude-sonnet-4-5","messages":[{"role":"user","content":"ping"}]}'
+  -d '{"model":"claude-sonnet-4-5-20250929","messages":[{"role":"user","content":"ping"}]}'
 ```
 
 Должен прийти ответ от Claude.
 
-Поддерживаемые модели зависят от того, какие OAuth-провайдеры подключил: `claude-sonnet-4-5`, `claude-opus-4-7`, `gemini-2.5-pro`, `gpt-5`, и т.д.
+**Важно**: CLIProxyAPI требует **точный versioned model ID** (с датой), а не короткий алиас. Получить актуальный список:
+
+```bash
+curl https://<домен>/v1/models -H "Authorization: Bearer sk-<ключ>" | jq '.data[].id'
+```
+
+Типичные ID на момент 2026: `claude-sonnet-4-5-20250929`, `claude-sonnet-4-6`, `claude-opus-4-7`, `claude-opus-4-5-20251101`, `claude-haiku-4-5-20251001`. Для Gemini / Codex — после подключения соответствующего OAuth.
 
 ## Persistence-тест
 
@@ -111,7 +117,7 @@ client = OpenAI(
 )
 
 resp = client.chat.completions.create(
-    model="claude-sonnet-4-5",
+    model="claude-sonnet-4-5-20250929",
     messages=[{"role": "user", "content": "Привет"}],
 )
 print(resp.choices[0].message.content)
